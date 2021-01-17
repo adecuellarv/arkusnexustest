@@ -1,11 +1,11 @@
 import React from 'react';
 
-function UserList() {
+function UsersList() {
   return (
     <div className="App">
-      <h1>Inicio del proyecto</h1>
+      <h1>Lista de usuarios</h1>
     </div>
   );
 }
 
-export default UserList;
+export default UsersList;
