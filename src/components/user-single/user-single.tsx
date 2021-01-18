@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
-import { Container, Row, Col } from "react-bootstrap";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { withRouter } from 'react-router-dom';
+import { Container } from "react-bootstrap";
 import { getUser } from '../../actions/users';
-import { objArrayUsers, objectUser } from '../../models/users';
+import { objArrayUsers } from '../../models/users';
 import './user-single.scss';
 
 let objMatch: { params: { id: number } }
-
 interface Props {
   users_list: typeof objArrayUsers;
   match: typeof objMatch;
@@ -24,6 +21,7 @@ const UserSingle: React.FC<Props> = (props) => {
     last_name: '',
     avatar: ''
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(
     () => {
@@ -36,15 +34,14 @@ const UserSingle: React.FC<Props> = (props) => {
     const id = props.match.params.id;
     const resp = await getUser(id);
     setUserInfo(resp);
+    setIsLoading(false);
   };
-
+  /*
   const findUser = async () => {
     let id = props.match.params.id;
     console.log(props.users_list[0].id, id)
     setUserInfo(props.users_list.filter(result => result.id === id)[0]);
-  };
-
-  console.log(userInfo);
+  };*/
 
   return (
     <div className="user-content">
@@ -52,7 +49,11 @@ const UserSingle: React.FC<Props> = (props) => {
       <div className="banner">
         <div className="info-single">
           <h2>{userInfo.first_name} <span>{userInfo.last_name}</span></h2>
-          <img src={userInfo.avatar} alt="avatar" />
+          {isLoading ? <div className="spinner">
+            <div className="double-bounce1"></div>
+            <div className="double-bounce2"></div>
+          </div> : <img src={userInfo.avatar} alt="avatar" />
+          }
         </div>
       </div>
       <div>
