@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-//import { connect } from 'react-redux';
-//import { withRouter } from 'react-router-dom';
 import { Modal, Button, Form } from "react-bootstrap";
 import { objectAdduser, objArrayUsers } from '../../models/users';
-//import { addUser } from '../../actions/users';
 import './modal-add.scss';
 interface Props {
   show: boolean;
@@ -25,8 +22,12 @@ const ModalAdd: React.FC<Props> = (props) => {
         name,
         job
       }, props.users_list);
+
+      setName('');
+      setJob('');
+      props.handleClose(false);
     }
-    props.handleClose(false);
+
   };
 
   return (
@@ -64,20 +65,4 @@ const ModalAdd: React.FC<Props> = (props) => {
     </Modal>
   );
 }
-/*
-const mapDispatchToProps = {
-  addUser
-};
-
-const mapStateToProps = (state: { users_list: typeof objArrayUsers }) => ({
-  users_list: state.users_list
-});
-
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(ModalAdd)
-);*/
 export default ModalAdd;

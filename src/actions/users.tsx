@@ -61,33 +61,47 @@ export const addUser = (data: typeof objectAdduser, users_list: typeof objArrayU
         else return { error: 'failed' };
     };
 
-/*
-export const addUser = async (data: typeof objectAdduser) =>
-    async (dispatch: Dispatch, store: Store) => {
+export const updateUser = (data: typeof objectAdduser, users_list: typeof objArrayUsers, userid: number) =>
+    async (dispatch: Dispatch) => {
         const reqresinFunctions = config.reqresin;
-        const url = reqresinFunctions.users;
+        const url = `${reqresinFunctions.users}/${userid}`;
         const response = await axios({
             url,
-            method: 'post',
+            method: 'put',
             data
         });
-        
-        if (response) {
+        const datas = idx(response, _ => _.data);
+        if (datas) {
             dispatch({
                 type: USERS_LIST,
-                payload: createNewUserIntoStore(store, data)
+                payload: remplaceElement(users_list, data, userid)
             });
-            return response;
+            return datas;
         }
         else return { error: 'failed' };
     };
 
+const remplaceElement = (users_list: typeof objArrayUsers, data: typeof objectAdduser, userid: number) => {
+    const arrayClone = cloneDeep(users_list);
+    const newArray = [];
+    for (let index = 0; index < arrayClone.length; index++) {
+        const element = arrayClone[index];
+        if (index === userid - 1) {
+            newArray.push({
+                id: element.id,
+                first_name: data.name,
+                last_name: element.last_name,
+                avatar: element.avatar,
+                email: element.email
+            });
+        } else {
+            newArray.push(element);
+        }
+    }
+    return newArray;
+};
 
-
-*/
 const createNewUserIntoStore = (users_list: typeof objArrayUsers, data: typeof objectAdduser) => {
-    //const storeNow = store.getState;
-    //console.log('#createNewUserIntoStore#', users_list, data);
     const arrayClone = cloneDeep(users_list);
     const newArray = [];
     for (let index = 0; index < arrayClone.length; index++) {
@@ -101,13 +115,12 @@ const createNewUserIntoStore = (users_list: typeof objArrayUsers, data: typeof o
                 email: `${data.name}@ggs.mx`
             });
             newArray.push(element);
-        }else{
-            if(index + 1 < arrayClone.length)
+        } else {
+            if (index + 1 < arrayClone.length)
                 newArray.push(element);
             else newArray.push(arrayClone[0]);
         }
     }
 
-    console.log('#newArray#', newArray)
     return newArray;
 };

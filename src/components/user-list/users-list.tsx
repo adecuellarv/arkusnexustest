@@ -6,7 +6,8 @@ import { Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
 import ModalAdd from '../modal-add';
-import { getUsers, addUser } from '../../actions/users';
+import ModalEdit from '../modal-edit';
+import { getUsers, addUser, updateUser } from '../../actions/users';
 import { objArrayUsers, objectAdduser } from '../../models/users';
 import './users-list.scss';
 
@@ -14,10 +15,19 @@ interface Props {
   users_list: typeof objArrayUsers;
   getUsers: (getUsers: number) => Promise<void>;
   addUser: (addUser: typeof objectAdduser, users_list: typeof objArrayUsers) => Promise<void>;
+  updateUser: (addUser: typeof objectAdduser, users_list: typeof objArrayUsers, userid: number) => Promise<void>;
 }
 
 const UsersList: React.FC<Props> = (props) => {
   const [showAdd, setShowAdd] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [infoUserToEdit, setInfoUserToEdit] = useState({
+    id: 0,
+    email: '',
+    first_name: '',
+    last_name: '',
+    avatar: ''
+  });
   useEffect(
     () => {
       loadUsers();
@@ -26,6 +36,11 @@ const UsersList: React.FC<Props> = (props) => {
 
   const loadUsers = async () => {
     await props.getUsers(1);
+  };
+
+  const openModalEdit = (userid: number) => {
+    setInfoUserToEdit(props.users_list.filter(result => result.id === userid)[0]);
+    setShowEdit(true);
   };
 
   return (
@@ -43,7 +58,7 @@ const UsersList: React.FC<Props> = (props) => {
                       <Link to={`/user/${user.id}`}><h5>{user.first_name} {user.last_name}</h5></Link>
                       <p>{user.email}</p>
                       <div>
-                        <label><FontAwesomeIcon icon={faPencilAlt} /></label>
+                        <label onClick={() => openModalEdit(user.id)}><FontAwesomeIcon icon={faPencilAlt} /></label>
                         <label><FontAwesomeIcon icon={faTimes} /></label>
                       </div>
                     </div>
@@ -58,11 +73,18 @@ const UsersList: React.FC<Props> = (props) => {
         <button className="btn-add" onClick={() => setShowAdd(true)}>
           <FontAwesomeIcon icon={faPlus} />
         </button>
-        <ModalAdd 
-          show={showAdd} 
+        <ModalAdd
+          show={showAdd}
           handleClose={() => setShowAdd(false)}
           users_list={props.users_list}
           addUser={props.addUser}
+        />
+        <ModalEdit
+          show={showEdit}
+          handleClose={() => setShowEdit(false)}
+          users_list={props.users_list}
+          infoUserToEdit={infoUserToEdit}
+          updateUser={props.updateUser}
         />
       </div>
     </div>
@@ -71,7 +93,8 @@ const UsersList: React.FC<Props> = (props) => {
 
 const mapDispatchToProps = {
   getUsers,
-  addUser
+  addUser,
+  updateUser
 };
 
 const mapStateToProps = (state: { users_list: typeof objArrayUsers }) => ({
