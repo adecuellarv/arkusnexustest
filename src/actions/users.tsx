@@ -8,8 +8,6 @@ export const USERS_LIST = 'USERS_LIST';
 
 export const getUsers = (page: number) =>
     async (dispatch: Dispatch) => {
-        console.log('entra a dispatch');
-        console.log('entra al dispatch');
         const reqresinFunctions = config.reqresin;
         const url = `${reqresinFunctions.users}?page=${page}`;
         const response = await axios({
@@ -17,6 +15,7 @@ export const getUsers = (page: number) =>
             method: 'get'
         });
         const datas = idx(response, _ => _.data.data);
+        console.log("#datas-resp#", datas)
         if (datas) {
             dispatch({
                 type: USERS_LIST,

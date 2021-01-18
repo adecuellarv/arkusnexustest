@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import UsersList from '../components/users-list/users-list';
+import UsersList from '../components/user-list';
 
 class AppRoutes extends Component {
     render() {
