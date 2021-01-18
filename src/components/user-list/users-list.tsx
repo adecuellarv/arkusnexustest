@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import isEmpty from 'lodash/isEmpty';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
+import isEmpty from 'lodash/isEmpty';
+import cloneDeep from 'lodash/cloneDeep';
 import { Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const UsersList: React.FC<Props> = (props) => {
+  const [list, setList] = useState(props.users_list);
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [infoUserToEdit, setInfoUserToEdit] = useState({
@@ -34,8 +36,14 @@ const UsersList: React.FC<Props> = (props) => {
     }, []
   );
 
+  useEffect(
+    () => {
+      setList(props.users_list);
+    }, [props.users_list]
+  );
+
   const loadUsers = async () => {
-    await props.getUsers(1);
+    if (isEmpty(props.users_list)) await props.getUsers(1);
   };
 
   const openModalEdit = (userid: number) => {
@@ -43,12 +51,27 @@ const UsersList: React.FC<Props> = (props) => {
     setShowEdit(true);
   };
 
+  const deleteElement = (userid: number) => {
+    const arrayClone = cloneDeep(list);
+    const indexDelete = arrayClone.findIndex(
+			interest => interest.id === userid
+    );
+    const newArray = [];
+		for (let index = 0; index < arrayClone.length; index++) {
+      if(index !== indexDelete){
+        const element = arrayClone[index];
+        newArray.push(element);
+      }
+    }
+    setList(newArray);
+  };
+
   return (
     <div className="principal">
       <Container>
         <h1>Arkus APP</h1>
         <Row>
-          {!isEmpty(props.users_list) && props.users_list.map(function (user, key) {
+          {!isEmpty(list) && list.map(function (user, key) {
             return (
               <Col xs={12} md={6} lg={4} key={key}>
                 <div className="card" >
@@ -59,7 +82,7 @@ const UsersList: React.FC<Props> = (props) => {
                       <p>{user.email}</p>
                       <div>
                         <label onClick={() => openModalEdit(user.id)}><FontAwesomeIcon icon={faPencilAlt} /></label>
-                        <label><FontAwesomeIcon icon={faTimes} /></label>
+                        <label onClick={() => deleteElement(user.id)}><FontAwesomeIcon icon={faTimes} /></label>
                       </div>
                     </div>
                   </div>

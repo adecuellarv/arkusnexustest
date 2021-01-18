@@ -81,6 +81,25 @@ export const updateUser = (data: typeof objectAdduser, users_list: typeof objArr
         else return { error: 'failed' };
     };
 
+export const deleteUser = (users_list: typeof objArrayUsers, userid: number) =>
+    (dispatch: Dispatch) => {
+        const arrayClone = cloneDeep(users_list);
+        const newArray = [];
+        for (let index = 0; index < arrayClone.length; index++) {
+            const element = arrayClone[index];
+            if (index !== userid) {
+                newArray.push(element);
+            }
+        }
+
+        dispatch({
+            type: USERS_LIST,
+            payload: newArray
+        });
+        return users_list;
+
+    };
+
 const remplaceElement = (users_list: typeof objArrayUsers, data: typeof objectAdduser, userid: number) => {
     const arrayClone = cloneDeep(users_list);
     const newArray = [];

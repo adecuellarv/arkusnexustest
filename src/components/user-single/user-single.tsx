@@ -26,7 +26,7 @@ const UserSingle: React.FC<Props> = (props) => {
   useEffect(
     () => {
       if (isEmpty(props.users_list)) loadUser();
-      else loadUser();
+      else findUser();
     }, []
   );
 
@@ -36,12 +36,13 @@ const UserSingle: React.FC<Props> = (props) => {
     setUserInfo(resp);
     setIsLoading(false);
   };
-  /*
+  
   const findUser = async () => {
     let id = props.match.params.id;
-    console.log(props.users_list[0].id, id)
-    setUserInfo(props.users_list.filter(result => result.id === id)[0]);
-  };*/
+    var idNumber = +id;
+    setUserInfo(props.users_list.filter(result => result.id === idNumber)[0]);
+    setIsLoading(false);
+  };
 
   return (
     <div className="user-content">
