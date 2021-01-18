@@ -1,7 +1,7 @@
 import { USERS_LIST } from "../actions/users";
-import { objArray } from '../components/user-list/users-list';
+import { objArrayUsers } from '../models/users';
 
-function usersReducer(state = {}, action: { type: string, payload: typeof objArray }) { console.log('#payload#', action.payload);
+function usersReducer(state = {}, action: { type: string, payload: typeof objArrayUsers }) {
     switch (action.type) {
         case USERS_LIST:
             return action.payload;

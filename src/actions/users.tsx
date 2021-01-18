@@ -15,7 +15,6 @@ export const getUsers = (page: number) =>
             method: 'get'
         });
         const datas = idx(response, _ => _.data.data);
-        console.log("#datas-resp#", datas)
         if (datas) {
             dispatch({
                 type: USERS_LIST,
@@ -25,3 +24,17 @@ export const getUsers = (page: number) =>
         }
         else return { error: 'failed' };
     };
+
+export const getUser = async (id: number) => {
+    const reqresinFunctions = config.reqresin;
+    const url = `${reqresinFunctions.users}${id}`;
+    const response = await axios({
+        url,
+        method: 'get'
+    });
+    const datas = idx(response, _ => _.data.data);
+    if (datas) {
+        return datas;
+    }
+    else return { error: 'failed' };
+};

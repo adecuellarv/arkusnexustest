@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { Container, Row, Col } from "react-bootstrap";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { getUsers } from '../../actions/users';
+import { objArrayUsers } from '../../models/users';
 import './users-list.scss';
 
-export let objArray: Array<{ id: number, email: string, first_name: string, last_name: string, avatar: string }>;
-
 interface Props {
-  users_list: typeof objArray;
+  users_list: typeof objArrayUsers;
   getUsers: (getUsers: number) => Promise<void>;
 }
 
@@ -31,15 +32,16 @@ const UsersList: React.FC<Props> = (props) => {
         <Row>
           {!isEmpty(props.users_list) && props.users_list.map(function (user, key) {
             return (
-              <Col xs={12} md={6} lg={4}>
-                <div className="card" key={key}>
+              <Col xs={12} md={6} lg={4} key={key}>
+                <div className="card" >
                   <div>
-                    <img src={user.avatar} alt="avatar" />
+                    <Link to={`/user/${user.id}`}><img src={user.avatar} alt="avatar" /></Link>
                     <div className="user-info">
-                      <h5>{user.first_name} {user.last_name}</h5>
-                      <label>{user.email}</label>
+                      <Link to={`/user/${user.id}`}><h5>{user.first_name} {user.last_name}</h5></Link>
+                      <p>{user.email}</p>
                       <div>
-
+                        <label><FontAwesomeIcon icon={faPencilAlt} /></label>
+                        <label><FontAwesomeIcon icon={faTimes} /></label>
                       </div>
                     </div>
                   </div>
@@ -57,7 +59,7 @@ const mapDispatchToProps = {
   getUsers
 };
 
-const mapStateToProps = (state: { users_list: typeof objArray }) => ({
+const mapStateToProps = (state: { users_list: typeof objArrayUsers }) => ({
   users_list: state.users_list
 });
 

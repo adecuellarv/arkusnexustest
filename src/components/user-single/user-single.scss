@@ -1,0 +1,39 @@
+.user-content{
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.banner{
+    background-image: linear-gradient(to right top, #2b3f90, #2a52a7, #2766be, #207bd5, #1290eb);;
+    //height: 400px;
+    width: 100%;
+}
+.info-single{
+    text-align: center;
+}
+.info-single h2{
+    color: white;
+    font-size: 50px;
+    padding-top: 55px;
+}
+.info-single h2 span{
+    font-size: 35px;
+}
+
+.info-single img{
+    border-radius: 50%;
+    position: relative;
+    bottom: -33px;
+    z-index: 1;
+}
+
+.card-single{
+    padding: 50px;
+}
+.card-single h5, .card-single p{
+    text-align: left;
+}
+.email-single{
+    font-weight: bold;
+    text-align: center;
+}
