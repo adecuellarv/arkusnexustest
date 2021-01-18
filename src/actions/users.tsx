@@ -1,6 +1,8 @@
 import axios from 'axios';
 import idx from 'idx';
 import { Dispatch } from 'redux';
+import cloneDeep from 'lodash/cloneDeep';
+import { objectAdduser, objArrayUsers } from '../models/users';
 import { getEnvironment } from '../config/config';
 const config = getEnvironment();
 
@@ -37,4 +39,75 @@ export const getUser = async (id: number) => {
         return datas;
     }
     else return { error: 'failed' };
+};
+
+export const addUser = (data: typeof objectAdduser, users_list: typeof objArrayUsers) =>
+    async (dispatch: Dispatch) => {
+        const reqresinFunctions = config.reqresin;
+        const url = `${reqresinFunctions.users}`;
+        const response = await axios({
+            url,
+            method: 'post',
+            data
+        });
+        const datas = idx(response, _ => _.data);
+        if (datas) {
+            dispatch({
+                type: USERS_LIST,
+                payload: createNewUserIntoStore(users_list, data)
+            });
+            return datas;
+        }
+        else return { error: 'failed' };
+    };
+
+/*
+export const addUser = async (data: typeof objectAdduser) =>
+    async (dispatch: Dispatch, store: Store) => {
+        const reqresinFunctions = config.reqresin;
+        const url = reqresinFunctions.users;
+        const response = await axios({
+            url,
+            method: 'post',
+            data
+        });
+        
+        if (response) {
+            dispatch({
+                type: USERS_LIST,
+                payload: createNewUserIntoStore(store, data)
+            });
+            return response;
+        }
+        else return { error: 'failed' };
+    };
+
+
+
+*/
+const createNewUserIntoStore = (users_list: typeof objArrayUsers, data: typeof objectAdduser) => {
+    //const storeNow = store.getState;
+    //console.log('#createNewUserIntoStore#', users_list, data);
+    const arrayClone = cloneDeep(users_list);
+    const newArray = [];
+    for (let index = 0; index < arrayClone.length; index++) {
+        const element = arrayClone[index + 1];
+        if (index === 0) {
+            newArray.push({
+                id: arrayClone.length + 1,
+                first_name: data.name,
+                last_name: 'Test',
+                avatar: 'https://picsum.photos/128/128?grayscale',
+                email: `${data.name}@ggs.mx`
+            });
+            newArray.push(element);
+        }else{
+            if(index + 1 < arrayClone.length)
+                newArray.push(element);
+            else newArray.push(arrayClone[0]);
+        }
+    }
+
+    console.log('#newArray#', newArray)
+    return newArray;
 };

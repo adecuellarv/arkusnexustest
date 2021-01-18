@@ -1,21 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { getUsers } from '../../actions/users';
-import { objArrayUsers } from '../../models/users';
+import { faPencilAlt, faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
+import ModalAdd from '../modal-add';
+import { getUsers, addUser } from '../../actions/users';
+import { objArrayUsers, objectAdduser } from '../../models/users';
 import './users-list.scss';
 
 interface Props {
   users_list: typeof objArrayUsers;
   getUsers: (getUsers: number) => Promise<void>;
+  addUser: (addUser: typeof objectAdduser, users_list: typeof objArrayUsers) => Promise<void>;
 }
 
 const UsersList: React.FC<Props> = (props) => {
-
+  const [showAdd, setShowAdd] = useState(false);
   useEffect(
     () => {
       loadUsers();
@@ -29,6 +31,7 @@ const UsersList: React.FC<Props> = (props) => {
   return (
     <div className="principal">
       <Container>
+        <h1>Arkus APP</h1>
         <Row>
           {!isEmpty(props.users_list) && props.users_list.map(function (user, key) {
             return (
@@ -51,12 +54,24 @@ const UsersList: React.FC<Props> = (props) => {
           })}
         </Row>
       </Container>
+      <div>
+        <button className="btn-add" onClick={() => setShowAdd(true)}>
+          <FontAwesomeIcon icon={faPlus} />
+        </button>
+        <ModalAdd 
+          show={showAdd} 
+          handleClose={() => setShowAdd(false)}
+          users_list={props.users_list}
+          addUser={props.addUser}
+        />
+      </div>
     </div>
   );
 };
 
 const mapDispatchToProps = {
-  getUsers
+  getUsers,
+  addUser
 };
 
 const mapStateToProps = (state: { users_list: typeof objArrayUsers }) => ({

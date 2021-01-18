@@ -3,8 +3,9 @@ a:link, a:visited, a:active{
     color: initial;
     text-decoration-line: none
 }
+
 .principal{
-    margin-top: 50px;
+    margin-top: 20px;
 }
 .card{
     z-index: auto;
@@ -30,4 +31,23 @@ a:link, a:visited, a:active{
     padding-right: 10px;
     color: initial;
     cursor: pointer;
+}
+.btn-add{
+    background: #2766be;
+    border: 0px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    color: white;
+    position: fixed;
+    right: 40px;
+    bottom: 30px;
+    transition: all 0.6s;
+}
+
+.btn-add:link, .btn-add:visited, .btn-add:active, .btn-add:focus{
+    color: white;
+    border: 0px;
+    outline: initial;
+    background: #2b3f90;
 }
