@@ -1,3 +1,5 @@
+@import "../common/styles.scss";
+
 a:link, a:visited, a:active{
     text-decoration: none !important;
     color: initial;
@@ -11,7 +13,7 @@ a:link, a:visited, a:active{
     z-index: auto;
     box-shadow: 0 12px 9px -5px rgba(0,0,0,0.12), 0 10px 32px 0 rgba(0,29,124,0.12);
     position: relative;
-    background: #ffffff;
+    background: white;
     transition: 0.3s box-shadow, 0.3s transform;
     border-radius: 6px;
     padding: 20px 0px 0px 0px;
@@ -23,7 +25,7 @@ a:link, a:visited, a:active{
     cursor: pointer;    
 }
 .user-info{
-    background: #eee;
+    background: $color-grayLight;
     padding: 20px 0px 20px 0px;
     margin-top: 20px;
 }
@@ -33,7 +35,7 @@ a:link, a:visited, a:active{
     cursor: pointer;
 }
 .btn-add{
-    background: #2766be;
+    background: $color-blue2;
     border: 0px;
     width: 55px;
     height: 55px;
@@ -49,5 +51,5 @@ a:link, a:visited, a:active{
     color: white;
     border: 0px;
     outline: initial;
-    background: #2b3f90;
+    background: $color-purpur1;
 }
