@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import UsersList from '../components/users-list/users-list';
 
